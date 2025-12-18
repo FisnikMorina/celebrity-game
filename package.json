@@ -10,7 +10,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build:web": "npx expo export -p web",
-    "deploy": "npm run build:web && npx gh-pages --nojekyll -d dist"
+    "deploy": "npm run build:web && node scripts/patch-gh-pages.mjs && npx gh-pages -d dist"
   },
   "dependencies": {
     "expo": "~54.0.29",
