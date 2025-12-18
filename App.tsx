@@ -1,20 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useMemo, useState } from "react";
+import type { GameState } from "./src/engine/types";
+import { builtInNames } from "./src/engine/names";
+import { createInitialState } from "./src/engine/game";
+
+import { SetupScreen } from "./src/screens/SetupScreen";
+import { PlayerEntryScreen } from "./src/screens/PlayerEntryScreen";
+import { TeamAssignScreen } from "./src/screens/TeamAssignScreen";
+import { CoinTossScreen } from "./src/screens/CoinTossScreen";
+
+import { RoundIntroScreen } from "./src/screens/RoundIntroScreen";
+import { PlayScreen } from "./src/screens/PlayScreen";
+import { TurnEndScreen } from "./src/screens/TurnEndScreen";
+import { RoundEndScreen } from "./src/screens/RoundEndScreen";
+import { GameEndScreen } from "./src/screens/GameEndScreen";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const namePool = useMemo(() => builtInNames(), []);
+  const [state, setState] = useState<GameState>(() => createInitialState());
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (state.phase === "setup") return <SetupScreen state={state} setState={setState} namePool={namePool} />;
+  if (state.phase === "playerEntry") return <PlayerEntryScreen state={state} setState={setState} />;
+  if (state.phase === "teamAssign") return <TeamAssignScreen state={state} setState={setState} namePool={namePool} />;
+  if (state.phase === "coinToss") return <CoinTossScreen state={state} setState={setState} />;
+
+  if (state.phase === "roundIntro") return <RoundIntroScreen state={state} setState={setState} />;
+  if (state.phase === "playing") return <PlayScreen state={state} setState={setState} />;
+  if (state.phase === "turnEnd") return <TurnEndScreen state={state} setState={setState} />;
+  if (state.phase === "roundEnd") return <RoundEndScreen state={state} setState={setState} />;
+  return <GameEndScreen state={state} setState={setState} />;
+}
