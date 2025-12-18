@@ -9,8 +9,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build:web": "npx expo export --platform web",
-    "deploy": "npm run build:web && cp dist/index.html dist/404.html && npx gh-pages -d dist"
+    "build:web": "npx expo export -p web",
+    "deploy": "npm run build:web && npx gh-pages --nojekyll -d dist"
   },
   "dependencies": {
     "expo": "~54.0.29",
